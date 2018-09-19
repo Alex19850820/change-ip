@@ -45,11 +45,14 @@ class ChangeIP extends Model{
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);   // переходит по редиректам
 		curl_setopt($ch, CURLOPT_ENCODING, "");        // обрабатывает все кодировки
 		curl_setopt($ch, CURLOPT_USERAGENT, $uagent);  // useragent
+//		curl_setopt($ch, CURLOPT_USERAGENT,'Chrome 11');
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120); // таймаут соединения
 		curl_setopt($ch, CURLOPT_TIMEOUT, 120);        // таймаут ответа
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);       // останавливаться после 10-ого редиректа (не много ли!?)
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
 
 //		curl_setopt($ch, CURLOPT_COOKIEFILE, $root . "cookie_j_{$id}.txt");
 //		curl_setopt($ch, CURLOPT_COOKIEJAR, $root . "cookie_f_{$id}.txt");
@@ -58,18 +61,19 @@ class ChangeIP extends Model{
 			curl_setopt($ch, CURLOPT_PROXY, $proxy);
 		}
 		
-		$content = curl_exec( $ch );
-
+//		$content = curl_exec( $ch );
+		$result = curl_exec($ch);
 //		$content = mb_convert_encoding($content,'HTML-ENTITIES','Windows-1251');
-		$err     = curl_errno( $ch );
-		$errmsg  = curl_error( $ch );
-		$header  = curl_getinfo( $ch );
+//		$err     = curl_errno( $ch );
+//		$errmsg  = curl_error( $ch );
+//		$header  = curl_getinfo( $ch );
 		curl_close( $ch );
-		$header['errno']   = $err;
-		$header['errmsg']  = $errmsg;
-		$header['content'] = $content;
+//		$header['errno']   = $err;
+//		$header['errmsg']  = $errmsg;
+//		$header['content'] = $content;
 
-		return $header['content'];
+//		return $header['content'];
+		return $result;
 	}
 	
 	public function randProxy() {
@@ -78,6 +82,6 @@ class ChangeIP extends Model{
 		foreach ($content as $string) {
 			$arr[] = $string;
 		}
-		return $arr[rand(1, 12000)];
+		return $arr[rand(1, 100)];
 	}
 }

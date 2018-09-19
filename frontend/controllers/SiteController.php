@@ -215,10 +215,11 @@ class SiteController extends Controller
     }
     
     public function actionSendForm(){
-    	if($_POST) {
+    	if(Yii::$app->request->isAjax) {
     		$post = $_POST['ChangeIP'];
     		$new_proxy = new ChangeIP();
-    		return $new_proxy->newIP($post['url'], $post['proxy']);
+    		$content = $new_proxy->newIP($post['url'], $post['proxy']);
+    		return $content;
 	    }
     }
 }
