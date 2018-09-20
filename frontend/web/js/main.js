@@ -13,7 +13,7 @@ $(document).ready(function () {
 				var url = $("input[name='ChangeIP[url]']").val()
 				$('#middle').attr('src',url);
 				$('#result').html(response);
-				$('#send-form').trigger('reset');
+				// $('#send-form').trigger('reset');
 			}
 		});
 	});

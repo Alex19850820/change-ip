@@ -219,7 +219,10 @@ class SiteController extends Controller
     		$post = $_POST['ChangeIP'];
     		$new_proxy = new ChangeIP();
     		$content = $new_proxy->newIP($post['url'], $post['proxy']);
-    		return $content;
+    		if($content){
+			    return $content;
+		    }
+    		return false;
 	    }
     }
 }

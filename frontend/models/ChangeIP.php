@@ -16,11 +16,14 @@ class ChangeIP extends Model{
 	
 	public $url;
 	public $proxy;
+	public $try = false;
 	
 	public function rules()
 	{
 		return [
-			[['url','proxy'], 'string']];
+			[['url','proxy'], 'string'],
+			[['url'], 'required', 'message' => "Неверно заполненое поле"],
+		];
 			
 	}
 	
@@ -53,16 +56,23 @@ class ChangeIP extends Model{
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_URL, $url);
-
+		curl_setopt($ch, CURLOPT_PROXY, $this->randProxy());
 //		curl_setopt($ch, CURLOPT_COOKIEFILE, $root . "cookie_j_{$id}.txt");
 //		curl_setopt($ch, CURLOPT_COOKIEJAR, $root . "cookie_f_{$id}.txt");
 		
-		if(isset($proxy)){
-			curl_setopt($ch, CURLOPT_PROXY, $proxy);
-		}
-		
-//		$content = curl_exec( $ch );
 		$result = curl_exec($ch);
+		// Проверяем наличие ошибок
+		if (!curl_errno($ch)) {
+			switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
+				case 200: return $result;
+					break;
+				default:
+					echo 'Неожиданный код HTTP: ', $http_code, "\n";
+					var_dump('Error'); die();
+			}
+		}
+//		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
+
 //		$content = mb_convert_encoding($content,'HTML-ENTITIES','Windows-1251');
 //		$err     = curl_errno( $ch );
 //		$errmsg  = curl_error( $ch );
@@ -73,7 +83,8 @@ class ChangeIP extends Model{
 //		$header['content'] = $content;
 
 //		return $header['content'];
-		return $result;
+		
+//		return $result;
 	}
 	
 	public function randProxy() {
