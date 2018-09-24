@@ -51,10 +51,9 @@ class ChangeIP extends Model{
 //		curl_setopt($ch, CURLOPT_USERAGENT,'Chrome 11');
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120); // таймаут соединения
 		curl_setopt($ch, CURLOPT_TIMEOUT, 120);        // таймаут ответа
-		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);       // останавливаться после 10-ого редиректа (не много ли!?)
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);       // останавливаться после 10-ого редиректа
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_PROXY, $this->randProxy());
 //		curl_setopt($ch, CURLOPT_COOKIEFILE, $root . "cookie_j_{$id}.txt");
@@ -93,6 +92,6 @@ class ChangeIP extends Model{
 		foreach ($content as $string) {
 			$arr[] = $string;
 		}
-		return $arr[rand(1, 100)];
+		return $arr[rand(1, 700)];
 	}
 }
